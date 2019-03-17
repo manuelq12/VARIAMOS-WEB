@@ -6,7 +6,7 @@
     </div>
     <p style="text-align:left;">
       Powered by
-      <strong>Coffee Framework</strong>
+      <strong>the Coffee Framework</strong>
     </p>
     <div class="div-text-area">
       <textarea v-model="input"></textarea>
