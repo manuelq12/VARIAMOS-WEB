@@ -47,7 +47,9 @@ export default {
       }else{
         default_val = '';
       }
-      var options = [
+      //var options = require('@/locales/solver.json'); //it works
+      //var options = require('../../locales/solver.json'); //it works
+      var options =       [
         {"name":"solver1","value":"Solver One"},
         {"name":"solver2","value":"Solver Two"},
         {"name":"solver3","value":"Solver Three"}
