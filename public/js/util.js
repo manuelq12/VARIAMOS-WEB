@@ -61,6 +61,53 @@ function modalInputTexts(texts,inputs,default_vals){
     return table;
 }
 
+function modalAreaTexts(texts,inputs,default_vals){
+    var table = document.createElement('table');
+    for(var i=0;i<texts.length;i++){
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        td.innerHTML=texts[i];
+        tr.appendChild(td);
+        
+        var input = document.createElement('textarea');
+        input.value=default_vals[i];
+        input.rows=5;
+        input.cols=50;
+        input.id=inputs[i];
+        input.name=inputs[i];
+        var td2 = document.createElement('td');
+        td2.appendChild(input);
+        tr.appendChild(td2);
+        table.appendChild(tr);
+    }
+    return table;
+}
+
+function modalSelect(text,inputName,default_vals, options){
+    var table = document.createElement('table');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.innerHTML=text;
+    tr.appendChild(td);
+    
+    var input = document.createElement('select');
+    input.id=inputName;
+    input.name=inputName;
+
+    for(var i=0;i<options.length;i++){
+        var option = document.createElement('option');
+        option.value = options[i].value;
+        option.innerHTML = options[i].name;
+        input.appendChild(option);
+    }
+
+    var td2 = document.createElement('td');
+    td2.appendChild(input);
+    tr.appendChild(td2);
+    table.appendChild(tr);
+    return table;
+}
+
 function modalButton(text,function_to_append){
     var button = document.createElement('button');
     button.innerText=text;

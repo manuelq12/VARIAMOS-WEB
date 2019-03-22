@@ -1,20 +1,20 @@
 var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
-    /* begin buttoncoffee */
+    /* begin buttonCoffee */
     // Adds an option to view the XML of the graph
-    var buttonXML = document.getElementById('buttonCOFFEE');
-    buttonXML.innerHTML="";
-    buttonXML.appendChild(mxUtils.button_with_icon(messages["setup_buttons_coffee"], function()
+    var buttonCOFFEE = document.getElementById('buttonCOFFEE');
+    buttonCOFFEE.innerHTML="";
+    buttonCOFFEE.appendChild(mxUtils.button_with_icon(messages["setup_buttons_coffee"], function()
     {
         var encoder = new mxCodec();
         var node = encoder.encode(graph.getModel());
         var strModel = mxUtils.getPrettyXml(node);
-        mxUtils.post('http://localhost:8080/variamosbackend/coffee',"modelType=VARXML&resourceType=TEXT&resourceContent="+encodeURIComponent(strModel),
+        mxUtils.post(localStorage["domain_implementation_main_path"]+'/coffee',"modelType=VARXML&resourceType=TEXT&resourceContent="+encodeURIComponent(strModel),
             function(req){
                 mxUtils.alert('Ready: '+req.isReady()+' Status: '+req.getStatus()+' Response: '+req.getText()+"\n"+strModel);
                 // Process req.getDocumentElement() using DOM API if OK...
             });
     },"coffee"));
-    /* end buttoncoffee */
+    /* end buttonCoffee */
 
     /* begin buttonxml */
     // Adds an option to view the XML of the graph

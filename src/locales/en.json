@@ -66,6 +66,11 @@
   "verification_root":"More than one root element",
   "verification_dead":"Dead elements",
   "verification_false":"False optional elements",
-  "verification_path_problem":"Please setup BackEnd parameters first"
+  "verification_path_problem":"Please setup BackEnd parameters first",
+
+  "coffee_title":"Coffee",
+  "coffee_configuration":"Parameters",
+  "coffee_configuration_title":"Configuration",
+  "coffee_solver":"Solver"
 
 }
