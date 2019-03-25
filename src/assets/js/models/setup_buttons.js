@@ -8,7 +8,14 @@ var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
         var encoder = new mxCodec();
         var node = encoder.encode(graph.getModel());
         var strModel = mxUtils.getPrettyXml(node);
-        mxUtils.post(localStorage["domain_implementation_main_path"]+'/coffee',"modelType=VARXML&resourceType=TEXT&resourceContent="+encodeURIComponent(strModel),
+        mxUtils.post(localStorage["domain_implementation_main_path"]+'/coffee',
+        "modelType=VARXML&resourceType=TEXT&resourceContent="+encodeURIComponent(strModel)
+        +"&responseType=JSON"+
+        +"&solverParameters="+localStorage["coffee_parameters"]
+        +"&solverType="+localStorage["coffee_solver"]
+        +"&problemType=BOOL"
+        +"&numberOfSolutions="+localStorage["coffee_number_of_solutions"]
+        ,
             function(req){
                 mxUtils.alert('Ready: '+req.isReady()+' Status: '+req.getStatus()+' Response: '+req.getText()+"\n"+strModel);
                 // Process req.getDocumentElement() using DOM API if OK...

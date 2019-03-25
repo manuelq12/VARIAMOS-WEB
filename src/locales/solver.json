@@ -1,5 +1,4 @@
 {
-    "solver1":"Solver A",
-    "solver2":"Solver B",
-    "solver3":"Solver C"
+    "Gecode":"Gecode [SAT and CSP Solver]",
+    "picat":"Picat [SAT Solver]"
 }
