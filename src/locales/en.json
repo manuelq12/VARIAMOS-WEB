@@ -69,8 +69,10 @@
   "verification_path_problem":"Please setup BackEnd parameters first",
 
   "coffee_title":"Coffee",
-  "coffee_configuration":"Parameters",
-  "coffee_configuration_title":"Configuration",
-  "coffee_solver":"Solver"
-
+  "coffee_configuration":"Configuration",
+  "coffee_configuration_title":"Coffee Configuration",
+  "coffee_solver":"Solver",
+  "coffee_parameters":"Parameters",
+  "coffee_number_of_solutions":"Number of Solutions",
+  "coffee_execution":"Execute"
 }

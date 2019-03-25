@@ -16,7 +16,7 @@
                 <BackEnd/>
                 <DomainImplementation :current_graph="graph"/>
                 <Verification :current_graph="graph"/>
-                <Coffee/>
+                <Coffee :current_graph="graph"/>
               </ul>
             </div>
           </nav>

@@ -60,52 +60,56 @@ function modalInputTexts(texts,inputs,default_vals){
     }
     return table;
 }
+/**
+ * Create a table with a configurable form.
+ * @param {Object} setupForm is a configuration of form
+ * @author Juan Reyes <seyerman@gmail.com>
+ */
+function modalForm(setupForm){
+    let table = document.createElement('table');
+    for(const field in setupForm){
+        let conf = setupForm[field]
 
-function modalAreaTexts(texts,inputs,default_vals){
-    var table = document.createElement('table');
-    for(var i=0;i<texts.length;i++){
-        var tr = document.createElement('tr');
-        var td = document.createElement('td');
-        td.innerHTML=texts[i];
-        tr.appendChild(td);
-        
-        var input = document.createElement('textarea');
-        input.value=default_vals[i];
-        input.rows=5;
-        input.cols=50;
-        input.id=inputs[i];
-        input.name=inputs[i];
-        var td2 = document.createElement('td');
-        td2.appendChild(input);
-        tr.appendChild(td2);
-        table.appendChild(tr);
+        let tr = document.createElement('tr');
+        let td1 = document.createElement('td');
+        td1.innerHTML = conf["text"]
+        tr.appendChild(td1)
+
+        let formEntry = document.createElement(conf["tag"])
+        let attributes = conf["attributes"]
+        formEntry["name"] = field
+        formEntry["id"] = field
+        if(localStorage[field]!==undefined){
+            formEntry["value"] = localStorage[field]
+        }
+        for(const name in attributes){
+            formEntry[name] = attributes[name]
+        }
+
+        if(conf["children"]!==undefined && conf["childrenTag"]!==undefined){
+            let childrenTag = conf["childrenTag"]
+            let childrenMark = conf["childrenMark"]
+            let children    = conf["children"]
+            for(let i=0;i<children.length;i++){
+                let childNode = document.createElement(childrenTag)
+                let childAttributes = children[i]
+                let mark = false
+                for(const name in childAttributes){
+                    childNode[name] = childAttributes[name]
+                    if(!mark && localStorage[field]!==undefined && childAttributes[name]==localStorage[field]){
+                        childNode[childrenMark] = true
+                    }
+                }
+                formEntry.appendChild(childNode)
+            }
+        }
+
+        let td2 = document.createElement('td');
+        td2.appendChild(formEntry)
+        tr.appendChild(td2)
+        table.appendChild(tr)    
     }
-    return table;
-}
-
-function modalSelect(text,inputName,default_vals, options){
-    var table = document.createElement('table');
-    var tr = document.createElement('tr');
-    var td = document.createElement('td');
-    td.innerHTML=text;
-    tr.appendChild(td);
-    
-    var input = document.createElement('select');
-    input.id=inputName;
-    input.name=inputName;
-
-    for(var i=0;i<options.length;i++){
-        var option = document.createElement('option');
-        option.value = options[i].value;
-        option.innerHTML = options[i].name;
-        input.appendChild(option);
-    }
-
-    var td2 = document.createElement('td');
-    td2.appendChild(input);
-    tr.appendChild(td2);
-    table.appendChild(tr);
-    return table;
+    return table
 }
 
 function modalButton(text,function_to_append){
