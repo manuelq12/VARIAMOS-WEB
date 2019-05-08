@@ -1,4 +1,6 @@
-var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
+import messages from '../common/messages'
+
+var setup_buttons = function setup_buttons(graph,undoManager,reused_functions,route_pare,store){
     /* begin buttonxml */
     // Adds an option to view the XML of the graph
     var buttonXML = document.getElementById('buttonXML');
@@ -49,6 +51,7 @@ var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
         model_code.value="";
         var event = new Event('change');
         model_code.dispatchEvent(event);
+        store.dispatch('updatecacheselected', []);
         location.reload();
     },"eraser"));
     /* end buttonreset */
@@ -84,7 +87,7 @@ var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
         var textToSaveAsBlob = new Blob([model_code.value], {type:"text/xml"});
         var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
         var downloadLink = document.createElement("a");
-        downloadLink.download = "model.xml";
+        downloadLink.download = route_pare.project + "_" + route_pare.folder + "_" + "model.xml";
         downloadLink.href = textToSaveAsURL;
         downloadLink.onclick = function(event)
         {
@@ -119,6 +122,7 @@ var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
     buttonIMPORT.innerHTML="";
     buttonIMPORT.appendChild(mxUtils.button_with_icon(messages["setup_buttons_import"], function()
     {   
+        store.dispatch('updatecacheselected', []);
         file.click();
     },"download"));
     /* end buttonImport */

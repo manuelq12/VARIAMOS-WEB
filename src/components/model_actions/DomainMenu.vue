@@ -1,10 +1,10 @@
 <template>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ $t("backend_title") }}
+      {{ $t("domain_menu") }}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a @click="set_params()" class="dropdown-item">{{ $t("backend_setup") }}</a>
+      <a @click="set_parameters()" class="dropdown-item">{{ $t("domain_menu_set_comp") }}</a>
     </div>
 
   </li>
@@ -16,30 +16,36 @@ import { setupModal, modalH3, modalInputTexts, modalButton } from '../../assets/
 export default {
   data: function(){
     return {
+      model_data:"",
     }
   },
+  props: {
+   current_graph: {
+    type: Object,
+    required: true
+   }
+  },
   methods: {
-    set_params(){
-      // modal header
-      var c_header = modalH3(this.$t("backend_setup"));
-      // modal body
+    //Start set parameters
+    set_parameters(){
+      var c_header = modalH3(this.$t("domain_menu_set_comp"));
       var default_vals = "";
-      var texts = [this.$t("backend_setup_path")];
-      var inputs = ["server_main_path"];
-      if (localStorage["domain_implementation_main_path"]) {
-        default_vals = [localStorage["domain_implementation_main_path"]];
+      var texts = [this.$t("domain_implementation_pool_path")];
+      var inputs = ["server_component_path"];
+      if (localStorage["domain_implementation_pool_path"]) {
+        default_vals = [localStorage["domain_implementation_pool_path"]];
       }else{
-        default_vals = ["http://localhost:8090/VariaMosServices/"];
+        default_vals = ["uploads/component_pool/"];
       }
       var c_body = modalInputTexts(texts,inputs,default_vals);
-      // modal footer
       var c_footer = modalButton(this.$t("modal_save"),this.save_parameters);
       setupModal(c_header,c_body,c_footer);
     },
+    //Start save parameters
     save_parameters(){
-      localStorage["domain_implementation_main_path"] =  document.getElementById('server_main_path').value;
+      localStorage["domain_implementation_pool_path"] =  document.getElementById('server_component_path').value;
       document.getElementById('main_modal').style.display="none";
-    }
+    },
   }
 }
 </script>

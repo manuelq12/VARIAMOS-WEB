@@ -1,5 +1,7 @@
+import messages from '../common/messages'
+
 //main function
-var main = function main(graph,layers,mxModel,toolbar,keyHandler,container,model_type,model_specific_main,counter,setupFunctions,undoManager)
+var main = function main(graph,layers,mxModel,toolbar,keyHandler,container,model_type,model_specific_main,counter,setupFunctions,undoManager, route_pare, store)
 {
 	// Checks if the browser is supported
 	if (!mxClient.isBrowserSupported())
@@ -53,7 +55,7 @@ var main = function main(graph,layers,mxModel,toolbar,keyHandler,container,model
 		}
 		
 		//setup buttons
-		setupFunctions["setup_buttons"](graph,undoManager,reused_functions);
+		setupFunctions["setup_buttons"](graph,undoManager,reused_functions,route_pare,store);
 		//setup properties
 		setupFunctions["setup_properties"](graph,c_properties_styles);
 		//setup keys
@@ -122,13 +124,13 @@ var main = function main(graph,layers,mxModel,toolbar,keyHandler,container,model
 		graph.setConnectable(true); // Enables new connections in the graph
 		graph.setMultigraph(false);
 		graph.setAllowDanglingEdges(false);
-		graph.setCellsDisconnectable(false) // Avoid disconect egdes
+		graph.setCellsDisconnectable(false) // Avoid disconnect egdes
 		graph.setDisconnectOnMove(false);
 		graph.setPanning(true);
 		graph.setCellsEditable(false); // Avoid double click cells
 		new mxRubberband(graph); // Enables rectangular selection
 		graph.maximumGraphBounds = new mxRectangle(0, 0, 2000, 2000);
-		new mxOutline(graph, document.getElementById('navigator'));
+		// new mxOutline(graph, document.getElementById('navigator'));
 	}
 
 	function setup_label_changed(graph,c_labels){		
