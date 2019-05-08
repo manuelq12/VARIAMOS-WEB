@@ -1,13 +1,22 @@
 <template>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ $t("verification") }}
-    </a>
+    <a
+      class="nav-link dropdown-toggle"
+      id="navbarDropdown"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >{{ $t("verification") }}</a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
       <a @click="test()" class="dropdown-item">Test sending the model</a>
-      <a v-for="item in menu_options" v-bind:key="item.label" v-on:click="clear_overlays(); item.func(current_graph, cell_errors, cell_overlays);" class="dropdown-item">
-        {{ item.label }}
-      </a>
+      <a @click="test_micro()" class="dropdown-item">Test new micro service</a>
+      <a
+        v-for="item in menu_options"
+        v-bind:key="item.label"
+        v-on:click="clear_overlays(); item.func(current_graph, cell_errors, cell_overlays);"
+        class="dropdown-item"
+      >{{ item.label }}</a>
       <a @click="clear_overlays()" class="dropdown-item">Clear errors</a>
     </div>
   </li>
@@ -69,6 +78,34 @@ export default {
       this.cell_overlays=[];
     },
     //executes a test sending the current mxgraph model to the backend server
+         test_micro(){
+     if (localStorage["domain_implementation_main_path"]) {
+       this.errors=[];
+       var encoder = new mxCodec();
+       var result = encoder.encode(this.current_graph.getModel());
+       var xml = mxUtils.getXml(result);
+       axios.post(localStorage["domain_implementation_main_path"]+'NewMicro/test', {
+         data: "test"
+       })
+       .then(response => {
+         var c_header = modalH3("Test response");
+         var c_body = modalSimpleText(response.data);
+         setupModal(c_header,c_body);
+       })
+       .catch(e => {
+         this.errors.push(e);
+         var c_header = modalH3(this.$t("modal_error"),"error");
+         var c_body = modalSimpleText(e + this.$t("model_actions_backend_problem"));
+         setupModal(c_header,c_body);
+       });
+     }else{
+       var c_header = modalH3(this.$t("modal_error"),"error");
+       var c_body = modalSimpleText(this.$t("verification_path_problem"));
+       setupModal(c_header,c_body);
+     }
+    
+   },
+
     test(){
       if (localStorage["domain_implementation_main_path"]) {
         this.errors=[];
