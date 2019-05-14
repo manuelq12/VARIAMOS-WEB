@@ -23,7 +23,7 @@
                   </b-col>
 
                   <b-col cols="4">
-                    <label>Model Configuration</label>
+                    <label><strong>Model Configuration</strong></label>
                   </b-col>
                 </b-row>
               </div>
@@ -56,7 +56,7 @@
                   </b-col>
 
                   <b-col cols="4">
-                    <label>Statistics</label>
+                    <label><strong>Statistics</strong></label>
                   </b-col>
                 </b-row>
               </div>
@@ -64,7 +64,33 @@
                 <b-col cols="8">
                   <b-form-textarea id="textarea" v-model="response" rows="4" max-rows="10"></b-form-textarea>
                 </b-col>
-                <b-col cols="4">col-4</b-col>
+                <b-col cols="4">
+                  <table class="table table-hover">
+                    <tbody>
+                      <tr>
+                        <td style="width: 70%">Satisfactory model:</td>
+                        <td style="width: 30%">YES</td>
+                      </tr>
+                      <tr>
+                        <td>Number of products that can be generated:</td>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <td>Number of elements:</td>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <td>Number of relationships (by type):</td>
+                        <td>100</td>
+                      </tr>
+
+                      <tr>
+                        <td>Overall time of analysis:</td>
+                        <td>30 sec</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </b-col>
               </b-row>
             </b-container>
           </div>
