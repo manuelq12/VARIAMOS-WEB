@@ -17,57 +17,50 @@
           <div class="div-text-area">
             <b-container>
               <div>
-                <div>
-                  <br>
-                  <!-- Selected file: {{file && file.name}}-->
-                  <b-form-file
-                    v-model="file"
-                    ref="file"
-                    id="file"
-                    class="mb-2"
-                    accept=".hlvl, .sfxm, .xml, .tvl, .txt"
-                    placeholder="Choose a model..."
-                    v-on:change="handleFileUpload()"
-                  ></b-form-file>
-
-                  <b-button v-on:click="test_submit" class="mr-2">
-                    <i class="fas fa-upload fa-sm text-white-50"></i>
-                    Submit
-                  </b-button>
-                  <b-button class="btn btn-danger" @click="file = null">Cancel</b-button>
-                </div>
-                <br>
-
                 <b-row>
                   <b-col cols="8">
                     <h6 class="m-0 font-weight-bold">HLVL Editor</h6>
+
+                    <b-form-textarea
+                      id="textarea-hlvl-editor"
+                      v-model="input_hlvl_editor"
+                      rows="10"
+                      max-rows="10"
+                      placeholder="HLVL Editor"
+                    ></b-form-textarea>
                   </b-col>
 
                   <b-col cols="4">
-                    <h6 class="m-0 font-weight-bold">Model Configuration</h6>
+                    <div>
+                      <br>
+                      <!-- Selected file: {{file && file.name}}-->
+                      <b-form-file
+                        v-model="file"
+                        ref="file"
+                        id="file"
+                        class="mb-2"
+                        accept=".hlvl, .sfxm, .xml, .tvl, .txt"
+                        placeholder="Choose a model..."
+                        v-on:change="handleFileUpload()"
+                      ></b-form-file>
+
+                      <b-button v-on:click="test_submit" class="mr-2">
+                        <i class="fas fa-upload fa-sm text-white-50"></i>
+                        Submit
+                      </b-button>
+                      <b-button class="btn btn-danger" @click="file = null">Cancel</b-button>
+                    </div>
+                    <h6 id="model-title" class="m-0 font-weight-bold">Model Configuration</h6>
+
+                    <b-form-textarea
+                      id="textarea-configuration"
+                      v-model="configuration"
+                      rows="5"
+                      max-rows="5"
+                    ></b-form-textarea>
                   </b-col>
                 </b-row>
               </div>
-              <b-row>
-                <b-col cols="8">
-                  <b-form-textarea
-                    id="textarea-hlvl-editor"
-                    v-model="input_hlvl_editor"
-                    rows="4"
-                    max-rows="10"
-                    placeholder="HLVL Editor"
-                  ></b-form-textarea>
-                </b-col>
-
-                <b-col cols="4">
-                  <b-form-textarea
-                    id="textarea-configuration"
-                    v-model="configuration"
-                    rows="4"
-                    max-rows="10"
-                  ></b-form-textarea>
-                </b-col>
-              </b-row>
 
               <br>
               <b-button v-on:click="test_micro">Compile code</b-button>
@@ -80,50 +73,60 @@
                 <b-row>
                   <b-col cols="8">
                     <h6 class="m-0 font-weight-bold">HLVL Console</h6>
+
+                    <b-form-textarea
+                      id="textarea-hlvl-console"
+                      v-model="input_hlvl_console"
+                      rows="4"
+                      max-rows="14"
+                    ></b-form-textarea>
                   </b-col>
 
                   <b-col cols="4">
-                    <h6 class="m-0 font-weight-bold">Statistics</h6>
+                    <div>
+                      <div class="card shadow mb-4">
+                        <!-- Card Header -->
+                        <div
+                          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                        >
+                          <h6 class="m-0 font-weight-bold">Statistics</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                          <!--Start statistic's table -->
+                          <table class="table table-hover">
+                            <tbody>
+                              <tr>
+                                <td style="width: 70%">Satisfactory model:</td>
+                                <td style="width: 30%" id="satisfactory_model"></td>
+                              </tr>
+                              <tr>
+                                <td>Number of products that can be generated:</td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>Number of elements:</td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>Number of relationships (by type):</td>
+                                <td></td>
+                              </tr>
+
+                              <tr>
+                                <td>Overall time of analysis:</td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <!-- End statistic's table -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- END -->
                   </b-col>
                 </b-row>
               </div>
-              <b-row>
-                <b-col cols="8">
-                  <b-form-textarea
-                    id="textarea-hlvl-console"
-                    v-model="input_hlvl_console"
-                    rows="4"
-                    max-rows="10"
-                  ></b-form-textarea>
-                </b-col>
-                <b-col cols="4">
-                  <table class="table table-hover">
-                    <tbody>
-                      <tr>
-                        <td style="width: 70%">Satisfactory model:</td>
-                        <td style="width: 30%" id="satisfactory_model"></td>
-                      </tr>
-                      <tr>
-                        <td>Number of products that can be generated:</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Number of elements:</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Number of relationships (by type):</td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td>Overall time of analysis:</td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </b-col>
-              </b-row>
             </b-container>
           </div>
         </b-tab>
@@ -239,5 +242,15 @@ export default {
 <style scoped>
 .font-weight-bold {
   padding: 5px;
+}
+
+#model-title {
+  padding-top: 17px;
+}
+
+.card-body {
+  padding-top: 0px;
+  padding: 0.25rem;
+  margin-top: -5px;
 }
 </style>
