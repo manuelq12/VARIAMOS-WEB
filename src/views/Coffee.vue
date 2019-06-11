@@ -33,18 +33,15 @@
                   <b-col cols="4">
                     <div>
                       <br>
-                      <!-- Selected file: {{file && file.name}}-->
                       <b-form-file
-                        v-model="file"
-                        ref="file"
-                        id="file"
+                        input="file"
                         class="mb-2"
                         accept=".hlvl, .sfxm, .xml, .tvl, .txt"
                         placeholder="Choose a model..."
-                        v-on:change="handleFileUpload()"
+                        @change="loadTextFromFile"
                       ></b-form-file>
 
-                      <b-button v-on:click="test_submit" class="mr-2">
+                      <b-button v-on:click="submit" class="mr-2">
                         <i class="fas fa-upload fa-sm text-white-50"></i>
                         Submit
                       </b-button>
@@ -168,16 +165,25 @@
         </b-tab>
       </b-tabs>
     </div>
-
     <br>
     <p style="text-align:left;">
       Powered by
       <strong>Coffee Framework</strong>
     </p>
+
+    <!--<div>
+      <label class="text-reader">
+        Read File
+        <input type="file" @change="loadTextFromFile">
+      </label>
+      <textarea rows="10" id="sara" v-model="text"></textarea>
+      <br>
+    </div>-->
   </div>
 </template>
 
 <script>
+var content;
 import axios from "axios";
 import { setupModal, modalH3, modalSimpleText } from "../assets/js/common/util";
 export default {
@@ -190,19 +196,27 @@ export default {
     };
   },
   methods: {
-    function1() {
-      alert(this.input_hlvl_editor);
+    loadTextFromFile(event) {
+      var input = event.target;
+
+      var reader = new FileReader();
+      reader.onload = function() {
+        var text = reader.result;
+        content = text;
+        /*document.getElementById("sara").value = text;*/
+      };
+      reader.readAsText(input.files[0]);
     },
 
     test_micro() {
-      alert(this.input_hlvl_editor);
+      alert(content);
       if (localStorage["domain_implementation_main_path"]) {
         this.errors = [];
         axios
           .post(
             localStorage["domain_implementation_main_path"] + "NewMicro/test",
             {
-              data: this.input_hlvl_editor
+              data: content
             }
           )
           .then(response => {
@@ -231,8 +245,8 @@ export default {
     },
     handleFileUpload() {},
 
-    test_submit() {
-      alert("Submit: " + this.file.name);
+    submit() {
+      alert(content);
     }
   }
 };
