@@ -33,19 +33,27 @@
                   <b-col cols="4">
                     <div>
                       <br>
+                      <!-- Start Browse -->
                       <b-form-file
                         input="file"
+                        id="file"
                         class="mb-2"
-                        accept=".hlvl, .sfxm, .xml, .tvl, .txt"
+                        accept=".hlvl, .sfxm, .xml, .tvl, .txt, .json"
                         placeholder="Choose a model..."
                         @change="loadTextFromFile"
                       ></b-form-file>
+                      <!-- End Browse -->
 
+                      <!-- Start Sumbit -->
                       <b-button v-on:click="submit" class="mr-2">
                         <i class="fas fa-upload fa-sm text-white-50"></i>
                         Submit
                       </b-button>
+                      <!-- End Sumbit -->
+
+                      <!-- Start Cancel 
                       <b-button class="btn btn-danger" @click="file = null">Cancel</b-button>
+                      End Cancel-->
                     </div>
                     <h6 id="model-title" class="m-0 font-weight-bold">Model Configuration</h6>
 
@@ -82,15 +90,16 @@
                   <b-col cols="4">
                     <div>
                       <div class="card shadow mb-4">
-                        <!-- Card Header -->
+                        <!-- Start Statistic's Header -->
                         <div
                           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                         >
                           <h6 class="m-0 font-weight-bold">Statistics</h6>
                         </div>
-                        <!-- Card Body -->
+                        <!-- End Statistics Header -->
+
+                        <!-- Start Statistic's Body -->
                         <div class="card-body">
-                          <!--Start statistic's table -->
                           <table class="table table-hover">
                             <tbody>
                               <tr>
@@ -116,11 +125,10 @@
                               </tr>
                             </tbody>
                           </table>
-                          <!-- End statistic's table -->
                         </div>
+                        <!-- End Statistic's Body -->
                       </div>
                     </div>
-                    <!-- END -->
                   </b-col>
                 </b-row>
               </div>
@@ -221,9 +229,9 @@ export default {
           )
           .then(response => {
             var c_header = modalH3("Test response");
-            var c_body = modalSimpleText(response.data);
-            var console = document.getElementById("textarea-hlvl-console");
-            console.value = response.data;
+            /*var c_body = modalSimpleText(response.data);*/
+            var hlvl_editor = document.getElementById("textarea-hlvl-editor");
+            hlvl_editor.value = response.data;
             setupModal(c_header, c_body);
           })
           .catch(e => {
@@ -241,12 +249,23 @@ export default {
       }
     },
     clearFiles() {
-      this.$refs["file-input"].reset();
+      this.$refs["file"].reset();
     },
-    handleFileUpload() {},
-
     submit() {
-      alert(content);
+      /*alert(content);*/
+      var firstLine = content.split("\n")[0];
+      var a = firstLine + "";
+      if (a.includes("xml")) {
+        alert("ES XML");
+      } else {
+        try {
+          JSON.parse(content);
+          content = JSON.parse(content);
+          alert("Es JSON");
+        } catch (e) {
+          alert("No es JSON");
+        }
+      }
     }
   }
 };
