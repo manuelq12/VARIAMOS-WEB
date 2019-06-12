@@ -68,7 +68,7 @@
               </div>
 
               <br>
-              <b-button v-on:click="test_micro">Compile code</b-button>
+              <b-button v-on:click="compile">Compile code</b-button>
               <br>
               <br>
             </b-container>
@@ -178,20 +178,12 @@
       Powered by
       <strong>Coffee Framework</strong>
     </p>
-
-    <!--<div>
-      <label class="text-reader">
-        Read File
-        <input type="file" @change="loadTextFromFile">
-      </label>
-      <textarea rows="10" id="sara" v-model="text"></textarea>
-      <br>
-    </div>-->
   </div>
 </template>
 
 <script>
 var content;
+var path;
 import axios from "axios";
 import { setupModal, modalH3, modalSimpleText } from "../assets/js/common/util";
 export default {
@@ -204,6 +196,8 @@ export default {
     };
   },
   methods: {
+    compile() {},
+
     loadTextFromFile(event) {
       var input = event.target;
 
@@ -211,25 +205,33 @@ export default {
       reader.onload = function() {
         var text = reader.result;
         content = text;
-        /*document.getElementById("sara").value = text;*/
       };
       reader.readAsText(input.files[0]);
     },
 
-    test_micro() {
-      alert(content);
+    submit() {
+      var firstLine = content.split("\n")[0] + "";
+      var secondLine = content.split("\n")[1] + "";
+
+      if (firstLine.includes("mxGraphModel")) {
+        path = "varXML2Hlvl";
+      } else if (secondLine.includes("extendedFeatureModel")) {
+        path = "feature2Hlvl";
+      } else if (
+        firstLine.includes("feature_model") &&
+        secondLine.includes("meta")
+      ) {
+        path = "splot2Hlvl/";
+      }
+
       if (localStorage["domain_implementation_main_path"]) {
         this.errors = [];
         axios
-          .post(
-            localStorage["domain_implementation_main_path"] + "NewMicro/test",
-            {
-              data: content
-            }
-          )
+
+          .post(localStorage["domain_implementation_main_path"] + path, {
+            data: content
+          })
           .then(response => {
-            var c_header = modalH3("Test response");
-            /*var c_body = modalSimpleText(response.data);*/
             var hlvl_editor = document.getElementById("textarea-hlvl-editor");
             hlvl_editor.value = response.data;
             setupModal(c_header, c_body);
@@ -246,25 +248,6 @@ export default {
         var c_header = modalH3(this.$t("modal_error"), "error");
         var c_body = modalSimpleText(this.$t("verification_path_problem"));
         setupModal(c_header, c_body);
-      }
-    },
-    clearFiles() {
-      this.$refs["file"].reset();
-    },
-    submit() {
-      /*alert(content);*/
-      var firstLine = content.split("\n")[0];
-      var a = firstLine + "";
-      if (a.includes("xml")) {
-        alert("ES XML");
-      } else {
-        try {
-          JSON.parse(content);
-          content = JSON.parse(content);
-          alert("Es JSON");
-        } catch (e) {
-          alert("No es JSON");
-        }
       }
     }
   }
