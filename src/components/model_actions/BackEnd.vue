@@ -29,11 +29,7 @@ export default {
       if (localStorage["domain_implementation_main_path"]) {
         default_vals = [localStorage["domain_implementation_main_path"]];
       }else{
-<<<<<<< HEAD
         default_vals = ["http://localhost:8090/VariaMosServices/"];
-=======
-        default_vals = ["http://localhost:8888/variamosbackend"];
->>>>>>> fc3a42ac55bbf8f4143f7690fb3846055ade9bfe
       }
       var c_body = modalInputTexts(texts,inputs,default_vals);
       // modal footer

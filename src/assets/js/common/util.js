@@ -60,57 +60,6 @@ export function modalInputTexts(texts,inputs,default_vals){
     }
     return table;
 }
-/**
- * Create a table with a configurable form.
- * @param {Object} setupForm is a configuration of form
- * @author Juan Reyes <seyerman@gmail.com>
- */
-function modalForm(setupForm){
-    let table = document.createElement('table');
-    for(const field in setupForm){
-        let conf = setupForm[field]
-
-        let tr = document.createElement('tr');
-        let td1 = document.createElement('td');
-        td1.innerHTML = conf["text"]
-        tr.appendChild(td1)
-
-        let formEntry = document.createElement(conf["tag"])
-        let attributes = conf["attributes"]
-        formEntry["name"] = field
-        formEntry["id"] = field
-        if(localStorage[field]!==undefined){
-            formEntry["value"] = localStorage[field]
-        }
-        for(const name in attributes){
-            formEntry[name] = attributes[name]
-        }
-
-        if(conf["children"]!==undefined && conf["childrenTag"]!==undefined){
-            let childrenTag = conf["childrenTag"]
-            let childrenMark = conf["childrenMark"]
-            let children    = conf["children"]
-            for(let i=0;i<children.length;i++){
-                let childNode = document.createElement(childrenTag)
-                let childAttributes = children[i]
-                let mark = false
-                for(const name in childAttributes){
-                    childNode[name] = childAttributes[name]
-                    if(!mark && localStorage[field]!==undefined && childAttributes[name]==localStorage[field]){
-                        childNode[childrenMark] = true
-                    }
-                }
-                formEntry.appendChild(childNode)
-            }
-        }
-
-        let td2 = document.createElement('td');
-        td2.appendChild(formEntry)
-        tr.appendChild(td2)
-        table.appendChild(tr)    
-    }
-    return table
-}
 
 export function modalCustomization(texts,inputs,default_vals){
     var table = document.createElement('table');
