@@ -1,6 +1,34 @@
+<<<<<<< HEAD
 import messages from '../common/messages'
 
 var setup_buttons = function setup_buttons(graph,undoManager,reused_functions,route_pare,store){
+=======
+var setup_buttons = function setup_buttons(graph,undoManager,reused_functions){
+    /* begin buttonCoffee */
+    // Adds an option to view the XML of the graph
+    var buttonCOFFEE = document.getElementById('buttonCOFFEE');
+    buttonCOFFEE.innerHTML="";
+    buttonCOFFEE.appendChild(mxUtils.button_with_icon(messages["setup_buttons_coffee"], function()
+    {
+        var encoder = new mxCodec();
+        var node = encoder.encode(graph.getModel());
+        var strModel = mxUtils.getPrettyXml(node);
+        mxUtils.post(localStorage["domain_implementation_main_path"]+'/coffee',
+        "modelType=VARXML&resourceType=TEXT&resourceContent="+encodeURIComponent(strModel)
+        +"&responseType=JSON"+
+        +"&solverParameters="+localStorage["coffee_parameters"]
+        +"&solverType="+localStorage["coffee_solver"]
+        +"&problemType=BOOL"
+        +"&numberOfSolutions="+localStorage["coffee_number_of_solutions"]
+        ,
+            function(req){
+                mxUtils.alert('Ready: '+req.isReady()+' Status: '+req.getStatus()+' Response: '+req.getText()+"\n"+strModel);
+                // Process req.getDocumentElement() using DOM API if OK...
+            });
+    },"coffee"));
+    /* end buttonCoffee */
+
+>>>>>>> fc3a42ac55bbf8f4143f7690fb3846055ade9bfe
     /* begin buttonxml */
     // Adds an option to view the XML of the graph
     var buttonXML = document.getElementById('buttonXML');
