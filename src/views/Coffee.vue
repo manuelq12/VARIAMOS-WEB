@@ -206,7 +206,11 @@ export default {
         var text = reader.result;
         content = text;
       };
-      reader.readAsText(input.files[0]);
+      try {
+        reader.readAsText(input.files[0]);
+      } catch (e) {
+        alert(e);
+      }
     },
 
     submit() {
@@ -223,7 +227,6 @@ export default {
       ) {
         path = "splot2Hlvl/";
       }
-
       if (localStorage["domain_implementation_main_path"]) {
         this.errors = [];
         axios
@@ -234,7 +237,6 @@ export default {
           .then(response => {
             var hlvl_editor = document.getElementById("textarea-hlvl-editor");
             hlvl_editor.value = response.data;
-            setupModal(c_header, c_body);
           })
           .catch(e => {
             this.errors.push(e);
