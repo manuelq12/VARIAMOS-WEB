@@ -196,7 +196,34 @@ export default {
     };
   },
   methods: {
-    compile() {},
+    compile() {
+       var hlvl_editor = document.getElementById("textarea-hlvl-editor");
+       var content = hlvl_editor.value;
+       var path="coffeHLVLP/hlvlParser"
+       if (localStorage["domain_implementation_main_path"]) {
+        this.errors = [];
+        axios.post(localStorage["domain_implementation_main_path"] + path, {
+            data: content
+          })
+          .then(response => {
+            var hlvl_editor = document.getElementById("textarea-hlvl-console");
+            hlvl_editor.value = response.data;
+          })
+          .catch(e => {
+            this.errors.push(e);
+            var c_header = modalH3(this.$t("modal_error"), "error");
+            var c_body = modalSimpleText(
+              e + this.$t("model_actions_backend_problem")
+            );
+            setupModal(c_header, c_body);
+          });
+      } else {
+        var c_header = modalH3(this.$t("modal_error"), "error");
+        var c_body = modalSimpleText(this.$t("verification_path_problem"));
+        setupModal(c_header, c_body);
+      }
+    
+    },
 
     loadTextFromFile(event) {
       var input = event.target;
@@ -213,19 +240,20 @@ export default {
       }
     },
 
+
     submit() {
       var firstLine = content.split("\n")[0] + "";
       var secondLine = content.split("\n")[1] + "";
 
       if (firstLine.includes("mxGraphModel")) {
-        path = "varXML2Hlvl";
+        path = "/coffeMP/varXML2Hlvl";
       } else if (secondLine.includes("extendedFeatureModel")) {
-        path = "feature2Hlvl";
+        path = "/coffeMP/feature2Hlvl";
       } else if (
         firstLine.includes("feature_model") &&
         secondLine.includes("meta")
       ) {
-        path = "splot2Hlvl/";
+        path = "/coffeMP/splot2Hlvl/";
       }
       if (localStorage["domain_implementation_main_path"]) {
         this.errors = [];
