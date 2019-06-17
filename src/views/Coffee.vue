@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <b-container>
@@ -246,20 +247,15 @@ export default {
       var secondLine = content.split("\n")[1] + "";
 
       if (firstLine.includes("mxGraphModel")) {
-        path = "/coffeMP/varXML2Hlvl";
+        path = "varXML2Hlvl";
       } else if (secondLine.includes("extendedFeatureModel")) {
-        path = "/coffeMP/feature2Hlvl";
-      } else if (
-        firstLine.includes("feature_model") &&
-        secondLine.includes("meta")
-      ) {
-        path = "/coffeMP/splot2Hlvl/";
+        path = "feature2Hlvl";
+      } else if ( firstLine.includes("feature_model") &&secondLine.includes("meta") ) {
+        path = "splot2Hlvl/";
       }
-      if (localStorage["domain_implementation_main_path"]) {
+     /* if (localStorage["http://i2thub.icesi.edu.co/coffeMP"]) {*/
         this.errors = [];
-        axios
-
-          .post(localStorage["domain_implementation_main_path"] + path, {
+        axios.post("http://i2thub.icesi.edu.co/coffeMP/"+path, {
             data: content
           })
           .then(response => {
@@ -274,11 +270,11 @@ export default {
             );
             setupModal(c_header, c_body);
           });
-      } else {
+     /* } else {
         var c_header = modalH3(this.$t("modal_error"), "error");
         var c_body = modalSimpleText(this.$t("verification_path_problem"));
         setupModal(c_header, c_body);
-      }
+      }*/
     }
   }
 };
