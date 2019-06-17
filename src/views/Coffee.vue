@@ -83,8 +83,8 @@
                     <b-form-textarea
                       id="textarea-hlvl-console"
                       v-model="input_hlvl_console"
-                      rows="4"
-                      max-rows="14"
+                      rows="10"
+                      max-rows="10"
                     ></b-form-textarea>
                   </b-col>
 
@@ -198,32 +198,51 @@ export default {
   },
   methods: {
     compile() {
-       var hlvl_editor = document.getElementById("textarea-hlvl-editor");
-       var content = hlvl_editor.value;
-       var path="coffeHLVLP/hlvlParser"
-       if (localStorage["domain_implementation_main_path"]) {
-        this.errors = [];
-        axios.post(localStorage["domain_implementation_main_path"] + path, {
-            data: content
-          })
-          .then(response => {
-            var hlvl_editor = document.getElementById("textarea-hlvl-console");
-            hlvl_editor.value = response.data;
-          })
-          .catch(e => {
-            this.errors.push(e);
-            var c_header = modalH3(this.$t("modal_error"), "error");
-            var c_body = modalSimpleText(
-              e + this.$t("model_actions_backend_problem")
-            );
-            setupModal(c_header, c_body);
-          });
-      } else {
+      var hlvl_editor = document.getElementById("textarea-hlvl-editor");
+      var content = hlvl_editor.value;
+      var path = "coffeHLVLP/hlvlParser";
+      /*if (localStorage["domain_implementation_main_path"]) {*/
+      this.errors = [];
+      axios
+        .post("http://i2thub.icesi.edu.co/" + path, {
+          data: content
+        })
+        .then(response => {
+          var hlvl_editor = document.getElementById("textarea-hlvl-console");
+          hlvl_editor.value = response.data;
+        })
+        .catch(e => {
+          this.errors.push(e);
+          var c_header = modalH3(this.$t("modal_error"), "error");
+          var c_body = modalSimpleText(
+            e + this.$t("model_actions_backend_problem")
+          );
+          setupModal(c_header, c_body);
+        });
+
+      /** Connection with Reasoning microservices */
+      axios
+        .post("http://localhost:9091/" + "reasoning/test", {
+          data: content
+        })
+        .then(response => {
+          alert(response.data);
+          /*var hlvl_editor = document.getElementById("textarea-hlvl-console");
+          hlvl_editor.value = response.data;*/
+        })
+        .catch(e => {
+          this.errors.push(e);
+          var c_header = modalH3(this.$t("modal_error"), "error");
+          var c_body = modalSimpleText(
+            e + this.$t("model_actions_backend_problem")
+          );
+          setupModal(c_header, c_body);
+        });
+      /*} else {
         var c_header = modalH3(this.$t("modal_error"), "error");
         var c_body = modalSimpleText(this.$t("verification_path_problem"));
         setupModal(c_header, c_body);
-      }
-    
+      }*/
     },
 
     loadTextFromFile(event) {
@@ -241,7 +260,6 @@ export default {
       }
     },
 
-
     submit() {
       var firstLine = content.split("\n")[0] + "";
       var secondLine = content.split("\n")[1] + "";
@@ -250,27 +268,31 @@ export default {
         path = "varXML2Hlvl";
       } else if (secondLine.includes("extendedFeatureModel")) {
         path = "feature2Hlvl";
-      } else if ( firstLine.includes("feature_model") &&secondLine.includes("meta") ) {
+      } else if (
+        firstLine.includes("feature_model") &&
+        secondLine.includes("meta")
+      ) {
         path = "splot2Hlvl/";
       }
-     /* if (localStorage["http://i2thub.icesi.edu.co/coffeMP"]) {*/
-        this.errors = [];
-        axios.post("http://i2thub.icesi.edu.co/coffeMP/"+path, {
-            data: content
-          })
-          .then(response => {
-            var hlvl_editor = document.getElementById("textarea-hlvl-editor");
-            hlvl_editor.value = response.data;
-          })
-          .catch(e => {
-            this.errors.push(e);
-            var c_header = modalH3(this.$t("modal_error"), "error");
-            var c_body = modalSimpleText(
-              e + this.$t("model_actions_backend_problem")
-            );
-            setupModal(c_header, c_body);
-          });
-     /* } else {
+      /* if (localStorage["http://i2thub.icesi.edu.co/coffeMP"]) {*/
+      this.errors = [];
+      axios
+        .post("http://i2thub.icesi.edu.co/coffeMP/" + path, {
+          data: content
+        })
+        .then(response => {
+          var hlvl_editor = document.getElementById("textarea-hlvl-editor");
+          hlvl_editor.value = response.data;
+        })
+        .catch(e => {
+          this.errors.push(e);
+          var c_header = modalH3(this.$t("modal_error"), "error");
+          var c_body = modalSimpleText(
+            e + this.$t("model_actions_backend_problem")
+          );
+          setupModal(c_header, c_body);
+        });
+      /* } else {
         var c_header = modalH3(this.$t("modal_error"), "error");
         var c_body = modalSimpleText(this.$t("verification_path_problem"));
         setupModal(c_header, c_body);
