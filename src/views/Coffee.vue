@@ -222,7 +222,7 @@ export default {
 
       /** Connection with Reasoning microservices */
       axios
-        .post("http://localhost:9091/" + "reasoning/test", {
+        .post("http://localhost:9091/" + "/reasoning/validModel", {
           data: content
         })
         .then(response => {
