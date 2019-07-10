@@ -238,8 +238,13 @@ export default {
       /** Connection with Reasoning microservices */
       /*path = "reasoning/test";
       axios
+<<<<<<< HEAD
         .post("http://localhost:9091/" + path, {
           data: temporary_response
+=======
+        .post("http://localhost:9091/" + "/reasoning/validModel", {
+          data: content
+>>>>>>> c4132b74404dff8b54fdbca94a47b819a07451c1
         })
         .then(response => {
           alert(temporary_response);
