@@ -7,7 +7,7 @@
           <h1 class="h2">{{ $t("app_menu_coffee") }}</h1>
         </b-col>
         <b-col>
-          <img style="float:right;height:50px;" src="@/assets/images/coffee.png">
+          <img style="float:right;height:50px;" src="@/assets/images/coffee.png" />
         </b-col>
       </b-row>
     </b-container>
@@ -33,7 +33,7 @@
 
                   <b-col cols="4">
                     <div>
-                      <br>
+                      <br />
                       <!-- Start Browse -->
                       <b-form-file
                         input="file"
@@ -68,10 +68,15 @@
                 </b-row>
               </div>
 
-              <br>
-              <b-button v-on:click="compile">Compile code</b-button>
-              <br>
-              <br>
+              <br />
+              <b-row class="justify-content-start">
+                <b-col>
+                  <b-button v-on:click="compile; secondFunction;">Compile code</b-button>
+                </b-col>
+              </b-row>
+
+              <br />
+              <br />
             </b-container>
 
             <b-container class="bv-example-row">
@@ -174,7 +179,7 @@
         </b-tab>
       </b-tabs>
     </div>
-    <br>
+    <br />
     <p style="text-align:left;">
       Powered by
       <strong>Coffee Framework</strong>
@@ -185,6 +190,12 @@
 <script>
 var content;
 var path;
+var response_mnz;
+var response_jsn;
+
+/**Delete this after sending the axio.post with two parameters */
+var temporary_response;
+
 import axios from "axios";
 import { setupModal, modalH3, modalSimpleText } from "../assets/js/common/util";
 export default {
@@ -197,19 +208,23 @@ export default {
     };
   },
   methods: {
-    compile() {
+    /** Connection with HLVL Parser microservices */
+    async compile() {
       var hlvl_editor = document.getElementById("textarea-hlvl-editor");
       var content = hlvl_editor.value;
-      var path = "coffeHLVLP/hlvlParser";
-      /*if (localStorage["domain_implementation_main_path"]) {*/
+      var path = "coffeeHLVLP/hlvlParser";
       this.errors = [];
       axios
-        .post("http://i2thub.icesi.edu.co/" + path, {
+        .post("http://localhost:7070/" + path, {
           data: content
         })
         .then(response => {
-          var hlvl_editor = document.getElementById("textarea-hlvl-console");
-          hlvl_editor.value = response.data;
+          temporary_response = response.data;
+          response_mnz = response.data.split("separadorcoffee")[0];
+          response_jsn = response.data.split("separadorcoffee")[1];
+
+          var test = document.getElementById("textarea-hlvl-console");
+          test.value = temporary_response;
         })
         .catch(e => {
           this.errors.push(e);
@@ -221,14 +236,13 @@ export default {
         });
 
       /** Connection with Reasoning microservices */
+      /*path = "reasoning/test";
       axios
-        .post("http://localhost:9091/" + "reasoning/test", {
-          data: content
+        .post("http://localhost:9091/" + path, {
+          data: temporary_response
         })
         .then(response => {
-          alert(response.data);
-          /*var hlvl_editor = document.getElementById("textarea-hlvl-console");
-          hlvl_editor.value = response.data;*/
+          alert(temporary_response);
         })
         .catch(e => {
           this.errors.push(e);
@@ -237,12 +251,12 @@ export default {
             e + this.$t("model_actions_backend_problem")
           );
           setupModal(c_header, c_body);
-        });
-      /*} else {
-        var c_header = modalH3(this.$t("modal_error"), "error");
-        var c_body = modalSimpleText(this.$t("verification_path_problem"));
-        setupModal(c_header, c_body);
-      }*/
+        });*/
+    },
+
+    async secondFunction() {
+      await compile;
+      alert(temporary_response);
     },
 
     loadTextFromFile(event) {
@@ -260,6 +274,7 @@ export default {
       }
     },
 
+    /** Connection with Model Parser microservices */
     submit() {
       var firstLine = content.split("\n")[0] + "";
       var secondLine = content.split("\n")[1] + "";
@@ -274,7 +289,6 @@ export default {
       ) {
         path = "splot2Hlvl/";
       }
-      /* if (localStorage["http://i2thub.icesi.edu.co/coffeMP"]) {*/
       this.errors = [];
       axios
         .post("http://i2thub.icesi.edu.co/coffeMP/" + path, {
@@ -292,11 +306,6 @@ export default {
           );
           setupModal(c_header, c_body);
         });
-      /* } else {
-        var c_header = modalH3(this.$t("modal_error"), "error");
-        var c_body = modalSimpleText(this.$t("verification_path_problem"));
-        setupModal(c_header, c_body);
-      }*/
     }
   }
 };
